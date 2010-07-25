@@ -48,32 +48,32 @@ module SanJuan
       namespace role do
         desc "Start god"
         task :start, :roles => role do
-          sudo "god -c #{san_juan.configuration_path(current_path, role)}"
+          sudo "#{san_juan.god_executable_path} -c #{san_juan.configuration_path(current_path, role)}"
         end
 
         desc "Start god interactively"
         task :start_interactive, :roles => role do
-          sudo "god -c #{san_juan.configuration_path(current_path, role)} -D"
+          sudo "#{san_juan.god_executable_path} -c #{san_juan.configuration_path(current_path, role)} -D"
         end
 
         desc "Reload the god config file"
         task :reload, :roles => role do
-          sudo "god load #{san_juan.configuration_path(current_path, role)}"
+          sudo "#{san_juan.god_executable_path} load #{san_juan.configuration_path(current_path, role)}"
         end
 
         desc "Quit god, but not the processes it's monitoring"
         task :quit, :roles => role do
-          sudo 'god quit'
+          sudo "#{san_juan.god_executable_path} quit"
         end
 
         desc "Terminate god and all monitored processes"
         task :terminate, :roles => role do
-          sudo 'god terminate'
+          sudo "#{san_juan.god_executable_path} terminate"
         end
 
         desc "Describe the status of the running tasks"
         task :status, :roles => role do
-          sudo 'god status'
+          sudo "#{san_juan.god_executable_path} status"
         end
 
         watches.each do |watch|
@@ -81,7 +81,7 @@ module SanJuan
             %w(start restart stop unmonitor remove log).each do |command|
               desc "#{command.capitalize} #{watch}"
               task command, :roles => role do
-                sudo "god #{command} #{watch}"
+                sudo "#{san_juan.god_executable_path} #{command} #{watch}"
               end
             end
           end
@@ -96,5 +96,8 @@ module SanJuan
     fetch(:god_config_path, nil) || "#{current_path}/config/god/#{role}.god"
   end
 
+  def god_executable_path
+    fetch(:god_executable_path, "god")
+  end
 end
 Capistrano.plugin :san_juan, SanJuan

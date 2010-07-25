@@ -127,6 +127,23 @@ san_juan.role :web, %w(nginx)
 </code>
 </pre>
 
+You can set the god executable path using the @god_executable_path@ capistrano variable:
+
+<pre>
+<code>
+require 'san_juan'
+
+set :god_executable_path, "/opt/ruby/bin/bundler exec god"
+
+role :app, "foo.example.com"
+role :web, "bar.example.com"
+
+san_juan.role :app, %w(mongrels memcached)
+san_juan.role :web, %w(nginx)
+
+</code>
+</pre>
+
 h2. Author
 
 "Jesse Newland":http://jnewland.com/
