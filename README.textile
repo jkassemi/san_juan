@@ -133,7 +133,7 @@ You can set the god executable path using the @god_executable_path@ capistrano v
 <code>
 require 'san_juan'
 
-set :god_executable_path, "/opt/ruby/bin/bundler exec god"
+set :god_executable_path, "/opt/ruby/bin/god"
 
 role :app, "foo.example.com"
 role :web, "bar.example.com"
